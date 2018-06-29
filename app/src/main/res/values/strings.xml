@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Entregable The Moma</string>
+    <string name="action_perfil">Perfil</string>
+    <string name="action_plus">Plus</string>
+    <string name="action_cerrarsesion">Cerrar Sesion</string>
+
+    <string name="facebook_app_id">267025420703136</string>
+    <string name="fb_login_protocol_scheme">fb267025420703136</string>
+
+
+</resources>

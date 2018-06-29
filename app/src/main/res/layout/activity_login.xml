@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:layout_marginTop="50dp"
+    tools:context="com.example.dh.entregableandroid2.view.ActivityLogin">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="163dp"
+        android:src="@drawable/momalogo" />
+
+
+    <Button
+        android:id="@+id/login_buttonFacebook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#4267b2"
+        android:drawableLeft="@drawable/facebook"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Continuar con Facebook"
+        android:textAllCaps="false"
+        android:textColor="#fff"
+        android:textStyle="bold" />
+
+</LinearLayout>
