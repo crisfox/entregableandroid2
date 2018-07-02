@@ -41,6 +41,7 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artist);
+
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
@@ -50,8 +51,10 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
             this.finish();
         }
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+
 
         leerListaDeArtistas();
 

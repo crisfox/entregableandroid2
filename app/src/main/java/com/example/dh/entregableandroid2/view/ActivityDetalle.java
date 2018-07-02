@@ -23,13 +23,13 @@ public class ActivityDetalle extends AppCompatActivity {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
-        if (isLoggedIn) {
+        if (!isLoggedIn) {
             Intent intent = new Intent(ActivityDetalle.this, ActivityArtist.class);
             startActivity(intent);
             this.finish();
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

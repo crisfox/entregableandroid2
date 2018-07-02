@@ -6,9 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.dh.entregableandroid2.R;
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private String nombreDelArtista;
     private RecyclerViewAdapter.EscuchadorDePinturas escuchadorDePinturas = this;
     private TextView textViewNombreArtistaEnPinturas;
+    private ImageButton buttonAtras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +44,23 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
-        if (isLoggedIn) {
-            Intent intent = new Intent(MainActivity.this, ActivityArtist.class);
+        if (!isLoggedIn) {
+            Intent intent = new Intent(MainActivity.this, ActivityLogin.class);
             startActivity(intent);
             this.finish();
         }
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar_main);
         setSupportActionBar(myToolbar);
+
+        buttonAtras = findViewById(R.id.buttonAtras);
+
+        buttonAtras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -60,15 +73,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         textViewNombreArtistaEnPinturas.setText(nombreDelArtista);
 
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
         cargarPinturas();
 
         recyclerView = findViewById(R.id.recyclerView);
@@ -111,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             case R.id.action_perfil:
                 Intent intentPerfil = new Intent(MainActivity.this, ActivityPerfil.class);
                 startActivity(intentPerfil);
-                finish();
                 return true;
             case R.id.action_cerrarsesion:
                 LoginManager.getInstance().logOut();
