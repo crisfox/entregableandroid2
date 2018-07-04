@@ -20,19 +20,11 @@ import com.example.dh.entregableandroid2.R;
 import com.example.dh.entregableandroid2.model.pojo.Artist;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,8 +39,6 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
     private List<Artist> listaDeArtistas;
     private RecyclerViewAdapterArtistas.EscuchadorDeArtista escuchadorDeArtista = this;
 
-    FirebaseStorage storage = FirebaseStorage.getInstance();
-    StorageReference mStorageRef;
 
 
     @Override
@@ -64,8 +54,6 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
             startActivity(intent);
             this.finish();
         }
-        StorageReference storageRef = storage.getReference();
-        StorageReference pathReference = storageRef.child("images/stars.jpg");
 
 
 

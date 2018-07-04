@@ -33,8 +33,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
 
     private List<Pintura> listaDePinturas;
     private EscuchadorDePinturas escuchadorDePinturas;
-
-
     private ImageView imageViewFotoPintura;
 
 
@@ -92,14 +90,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
             StorageReference storageRef = storage.getReference();
             StorageReference imageRef;
 
-            imageRef = storageRef.child("artistpaints").child("andymilanapo.png");
+            imageRef = storageRef.child(pintura.getImage());
             textViewNombre.setText(pintura.getName());
 
 
 
             File localFile = null;
             try {
-                localFile = File.createTempFile("images", "jpg");
+                localFile = File.createTempFile("images", "png");
                 final File finalLocalFile = localFile;
                 imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override

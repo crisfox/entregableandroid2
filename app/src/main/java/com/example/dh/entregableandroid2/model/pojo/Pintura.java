@@ -4,7 +4,7 @@ package com.example.dh.entregableandroid2.model.pojo;
  * Created by DH on 11/6/2018.
  */
 
-public class Pintura extends Arte {
+public class Pintura {
     private String name;
     private String artistId;
     private String image;

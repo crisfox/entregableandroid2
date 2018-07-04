@@ -34,6 +34,10 @@ public class RecyclerViewAdapterArtistas extends RecyclerView.Adapter {
     private List<Artist> listaDeArtistas;
     private EscuchadorDeArtista escuchadorDeArtista;
 
+    private ImageView imageViewFotoArtista;
+
+
+
     public RecyclerViewAdapterArtistas(List<Artist> listaDeArtistas, EscuchadorDeArtista escuchadorDeArtista) {
         this.listaDeArtistas = listaDeArtistas;
         this.escuchadorDeArtista = escuchadorDeArtista;
@@ -69,9 +73,12 @@ public class RecyclerViewAdapterArtistas extends RecyclerView.Adapter {
 
         public ArtistViewHolder(View itemView) {
             super(itemView);
+
             textViewNombreArtist = itemView.findViewById(R.id.textViewNombreArtist);
+            imageViewFotoArtista = itemView.findViewById(R.id.imageViewFotoArtista);
             textViewNacionalidadArtist = itemView.findViewById(R.id.textViewNacionalidadArtist);
             linearLayoutParaListener = itemView.findViewById(R.id.layoutParaElListener);
+
             linearLayoutParaListener.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -85,6 +92,35 @@ public class RecyclerViewAdapterArtistas extends RecyclerView.Adapter {
         }
 
         public void cargarDatos(Artist artist) {
+
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+            StorageReference imageRef;
+
+            imageRef = storageRef.child(artist.getImagen());
+
+
+            File localFile = null;
+            try {
+                localFile = File.createTempFile("images", "png");
+                final File finalLocalFile = localFile;
+                imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        // Local temp file has been created
+                        Bitmap bitmapDeImagen = BitmapFactory.decodeFile(finalLocalFile.getAbsolutePath());
+                        imageViewFotoArtista.setImageBitmap(bitmapDeImagen);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle any errors
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             textViewNombreArtist.setText(artist.getName());
             textViewNacionalidadArtist.setText(artist.getNationality());
 
