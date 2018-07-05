@@ -95,6 +95,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
 
 
 
+
+
+
             File localFile = null;
             try {
                 localFile = File.createTempFile("images", "png");

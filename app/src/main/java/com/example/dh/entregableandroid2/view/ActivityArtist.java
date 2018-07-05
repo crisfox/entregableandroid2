@@ -137,6 +137,8 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
                 recyclerViewAdapterArtistas = new RecyclerViewAdapterArtistas(listaDeArtistas, escuchadorDeArtista);
                 recyclerView.setAdapter(recyclerViewAdapterArtistas);
 
+                recyclerViewAdapterArtistas.notifyDataSetChanged();
+
             }
 
 

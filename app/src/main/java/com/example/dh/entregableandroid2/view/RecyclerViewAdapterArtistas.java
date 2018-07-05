@@ -1,9 +1,6 @@
 package com.example.dh.entregableandroid2.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,16 +10,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Registry;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
 import com.example.dh.entregableandroid2.R;
 import com.example.dh.entregableandroid2.model.pojo.Artist;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -35,6 +33,7 @@ public class RecyclerViewAdapterArtistas extends RecyclerView.Adapter {
     private EscuchadorDeArtista escuchadorDeArtista;
 
     private ImageView imageViewFotoArtista;
+    private Context context;
 
 
 
@@ -46,7 +45,7 @@ public class RecyclerViewAdapterArtistas extends RecyclerView.Adapter {
     @NonNull
     @Override
     public ArtistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+        context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View itemView = layoutInflater.inflate(R.layout.celda_artistas, parent, false);
         ArtistViewHolder artistViewHolder = new ArtistViewHolder(itemView);
@@ -94,32 +93,10 @@ public class RecyclerViewAdapterArtistas extends RecyclerView.Adapter {
         public void cargarDatos(Artist artist) {
 
             FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReference();
-            StorageReference imageRef;
-
-            imageRef = storageRef.child(artist.getImagen());
+            StorageReference storageRef = storage.getReference().child(artist.getImagen());
 
 
-            File localFile = null;
-            try {
-                localFile = File.createTempFile("images", "png");
-                final File finalLocalFile = localFile;
-                imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        // Local temp file has been created
-                        Bitmap bitmapDeImagen = BitmapFactory.decodeFile(finalLocalFile.getAbsolutePath());
-                        imageViewFotoArtista.setImageBitmap(bitmapDeImagen);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle any errors
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Glide.with(context).load(storageRef).into(imageViewFotoArtista);
 
             textViewNombreArtist.setText(artist.getName());
             textViewNacionalidadArtist.setText(artist.getNationality());
@@ -132,4 +109,14 @@ public class RecyclerViewAdapterArtistas extends RecyclerView.Adapter {
         public void seleccionarAlArtista(Artist artist);
     }
 
+    @GlideModule
+    public class MyAppGlideModule extends AppGlideModule {
+
+        @Override
+        public void registerComponents(Context context, Glide glide, Registry registry) {
+            // Register FirebaseImageLoader to handle StorageReference
+            registry.append(StorageReference.class, InputStream.class,
+                    new FirebaseImageLoader.Factory());
+        }
+    }
 }
