@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,14 +22,22 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.ActivityLogin" />
-        <activity android:name=".view.MainActivity" android:label="Pinturas" android:parentActivityName=".view.MainActivity"/>
-        <activity android:name=".view.ActivityPerfil" android:label="Mi Perfil" />
+        <activity
+            android:name=".view.MainActivity"
+            android:label="Pinturas"
+            android:parentActivityName=".view.MainActivity" />
+        <activity
+            android:name=".view.ActivityPerfil"
+            android:label="Mi Perfil" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".view.ActivityDetalle" android:parentActivityName=".view.ActivityDetalle"></activity>
+        <activity
+            android:name=".view.ActivityDetalle"
+            android:parentActivityName=".view.ActivityDetalle" />
+        <activity android:name=".view.ActivityChat"></activity>
     </application>
 
 </manifest>
