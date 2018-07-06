@@ -1,102 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context="com.example.dh.entregableandroid2.view.ActivityDetalle">
 
-    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
+        android:id="@+id/linearLayoutTitulo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.example.dh.entregableandroid2.view.ActivityDetalle">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/linearLayoutTitulo"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/my_toolbar_detalle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/my_toolbar_detalle"
-                android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize"
-                android:background="@color/primary"
-                app:titleTextColor="#ffffff" />
-
-            <TextView
-                android:id="@+id/textViewNombrePinturaDetalle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/imageViewFotoPinturaDetalle"
-                android:layout_centerHorizontal="true"
-                android:gravity="center_vertical"
-                android:hint="NOMBRE DE LA PINTURA"
-                android:textAlignment="center"
-                android:textColor="@color/primary_text"
-                android:textSize="24dp" />
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageViewFotoPinturaDetalle"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_below="@+id/linearLayoutTitulo"
-            android:layout_marginBottom="10dp"
-            android:scaleType="centerCrop" />
-
-        <LinearLayout
-            android:id="@+id/linea"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/imageViewFotoPinturaDetalle"
-            android:background="#000"
-            android:orientation="horizontal" />
-
-
-        <ImageView
-            android:id="@+id/imageViewFotoArtistaDetalle"
-            android:layout_width="150dp"
-            android:layout_height="200dp"
-            android:layout_below="@+id/linea"
-            android:layout_margin="10dp"
-            android:scaleType="centerCrop" />
-
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/primary"
+            app:titleTextColor="#ffffff" />
 
         <TextView
-            android:id="@+id/textViewNombreArtistaDetalle"
+            android:id="@+id/textViewNombrePinturaDetalle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/imageViewFotoArtistaDetalle"
-            android:layout_marginRight="5dp"
-            android:layout_toRightOf="@+id/imageViewFotoArtistaDetalle"
-            android:hint="NOMBRE DEL ARTISTA"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/imageViewFotoPinturaDetalle"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:hint="NOMBRE DE LA PINTURA"
+            android:textAlignment="center"
             android:textColor="@color/primary_text"
-            android:textSize="20dp" />
+            android:textSize="24dp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageViewFotoPinturaDetalle"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/linearLayoutTitulo"
+        android:layout_marginBottom="10dp"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:id="@+id/linea"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/imageViewFotoPinturaDetalle"
+        android:background="#000"
+        android:orientation="horizontal" />
 
 
-        <TextView
-            android:id="@+id/textViewNacionalidadArtistaDetalle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewNombreArtistaDetalle"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/imageViewFotoArtistaDetalle"
-            android:hint="NOMBRE DEL ARTISTA"
-            android:textColor="@color/primary_text"
+    <ImageView
+        android:id="@+id/imageViewFotoArtistaDetalle"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/linea"
+        android:layout_margin="10dp"
+        android:scaleType="centerCrop" />
 
-            android:textSize="12dp" />
 
-        <TextView
-            android:id="@+id/textViewDescripcionArtistaDetalle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textViewNombreArtistaDetalle"
-            android:layout_below="@+id/textViewNacionalidadArtistaDetalle"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:hint="Descripcion del artista"
-            android:textColor="@color/primary_text"
-            android:textSize="12dp" />
+    <TextView
+        android:id="@+id/textViewNombreArtistaDetalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imageViewFotoArtistaDetalle"
+        android:layout_marginRight="5dp"
+        android:layout_toRightOf="@+id/imageViewFotoArtistaDetalle"
+        android:hint="NOMBRE DEL ARTISTA"
+        android:textColor="@color/primary_text"
+        android:textSize="20dp" />
 
-    </RelativeLayout>
-</ScrollView>
+
+    <TextView
+        android:id="@+id/textViewNacionalidadArtistaDetalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewNombreArtistaDetalle"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/imageViewFotoArtistaDetalle"
+        android:hint="NOMBRE DEL ARTISTA"
+        android:textColor="@color/primary_text"
+
+        android:textSize="12dp" />
+
+    <TextView
+        android:id="@+id/textViewDescripcionArtistaDetalle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewNombreArtistaDetalle"
+        android:layout_below="@+id/textViewNacionalidadArtistaDetalle"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:hint="Descripcion del artista"
+        android:textColor="@color/primary_text"
+        android:textSize="12dp" />
+
+</RelativeLayout>

@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".view.ActivityArtist"
-            android:label="Pinturas">
+            android:label="Artistas">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,8 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.ActivityLogin" />
-        <activity android:name=".view.MainActivity" android:parentActivityName=".view.MainActivity"/>
-        <activity android:name=".view.ActivityPerfil" />
+        <activity android:name=".view.MainActivity" android:label="Pinturas" android:parentActivityName=".view.MainActivity"/>
+        <activity android:name=".view.ActivityPerfil" android:label="Mi Perfil" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

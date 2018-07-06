@@ -63,9 +63,11 @@ public class ActivityDetalle extends AppCompatActivity {
             this.finish();
         }
         leerListaDeArtistas();
-        myToolbar = findViewById(R.id.my_toolbar_perfil);
+        myToolbar = findViewById(R.id.my_toolbar_detalle);
         setSupportActionBar(myToolbar);
         ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -84,7 +86,6 @@ public class ActivityDetalle extends AppCompatActivity {
         StorageReference storageRefPintura = storage.getReference().child(foto);
         Glide.with(ActivityDetalle.this).using(new FirebaseImageLoader()).load(storageRefPintura).into(imageViewFotoPinturaDetalle);
 
-        myToolbar.setTitle(NOMBRE);
 
 
         imageViewArtistaDetalle = findViewById(R.id.imageViewFotoArtistaDetalle);
