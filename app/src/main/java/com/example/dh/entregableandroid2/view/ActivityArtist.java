@@ -112,6 +112,7 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
         reference.addListenerForSingleValueEvent(artistListener);
     }
 
+
     public void leerListaDeArtistas() {
 
         DatabaseReference mDatabase;
@@ -132,13 +133,8 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
                     listaDeArtistas.add(artist);
 
                 }
-                RecyclerView.LayoutManager layoutManager = new GridLayoutManager(ActivityArtist.this, 2);
-                recyclerView.setLayoutManager(layoutManager);
-                recyclerViewAdapterArtistas = new RecyclerViewAdapterArtistas(listaDeArtistas, escuchadorDeArtista);
-                recyclerView.setAdapter(recyclerViewAdapterArtistas);
 
-                recyclerViewAdapterArtistas.notifyDataSetChanged();
-
+                seteoDeRecycler();
             }
 
 
@@ -150,6 +146,18 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
         };
         reference.addListenerForSingleValueEvent(valueEventListener);
 
+
+
+    }
+
+    public void seteoDeRecycler(){
+
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(ActivityArtist.this, 2);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerViewAdapterArtistas = new RecyclerViewAdapterArtistas(listaDeArtistas, escuchadorDeArtista);
+        recyclerView.setAdapter(recyclerViewAdapterArtistas);
+
+        recyclerViewAdapterArtistas.notifyDataSetChanged();
     }
 
     @Override
@@ -159,6 +167,7 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
         Bundle bundle = new Bundle();
         bundle.putString("artistId", artist.getArtistId());
         bundle.putString("nombre", artist.getName());
+        bundle.putString("fotoArtista", artist.getImagen());
 
         intent.putExtras(bundle);
         startActivity(intent);

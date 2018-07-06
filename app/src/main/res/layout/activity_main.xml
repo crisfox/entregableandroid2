@@ -7,45 +7,12 @@
     android:orientation="vertical"
     tools:context="com.example.dh.entregableandroid2.view.MainActivity">
 
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar_main"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/primary"
         app:titleTextColor="#ffffff" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/buttonAtras"
-            android:layout_width="wrap_content"
-            android:layout_height="?attr/actionBarSize"
-            android:src="@drawable/ic_keyboard_arrow_left_black_24dp"
-            android:backgroundTint="#00000000"/>
-
-
-        <TextView
-            android:id="@+id/textViewNombreArtistaEnPinturas"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="NOMBRE ARTISTA"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_gravity="center_vertical" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="5dp"
-        android:background="#333" />
-
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

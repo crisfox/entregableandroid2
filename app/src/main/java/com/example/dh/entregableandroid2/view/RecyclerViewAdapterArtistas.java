@@ -11,9 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.Registry;
-import com.bumptech.glide.annotation.GlideModule;
-import com.bumptech.glide.module.AppGlideModule;
 import com.example.dh.entregableandroid2.R;
 import com.example.dh.entregableandroid2.model.pojo.Artist;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
@@ -96,7 +93,7 @@ public class RecyclerViewAdapterArtistas extends RecyclerView.Adapter {
             StorageReference storageRef = storage.getReference().child(artist.getImagen());
 
 
-            Glide.with(context).load(storageRef).into(imageViewFotoArtista);
+            Glide.with(context).using(new FirebaseImageLoader()).load(storageRef).into(imageViewFotoArtista);
 
             textViewNombreArtist.setText(artist.getName());
             textViewNacionalidadArtist.setText(artist.getNationality());
@@ -109,14 +106,5 @@ public class RecyclerViewAdapterArtistas extends RecyclerView.Adapter {
         public void seleccionarAlArtista(Artist artist);
     }
 
-    @GlideModule
-    public class MyAppGlideModule extends AppGlideModule {
 
-        @Override
-        public void registerComponents(Context context, Glide glide, Registry registry) {
-            // Register FirebaseImageLoader to handle StorageReference
-            registry.append(StorageReference.class, InputStream.class,
-                    new FirebaseImageLoader.Factory());
-        }
-    }
 }

@@ -13,8 +13,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.dh.entregableandroid2.R;
 import com.example.dh.entregableandroid2.model.pojo.Pintura;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -34,6 +36,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
     private List<Pintura> listaDePinturas;
     private EscuchadorDePinturas escuchadorDePinturas;
     private ImageView imageViewFotoPintura;
+    private Context context;
 
 
     public RecyclerViewAdapter(List<Pintura> listaDePinturas, EscuchadorDePinturas escuchadorDePinturas) {
@@ -44,7 +47,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public PinturasViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+        context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View itemView = layoutInflater.inflate(R.layout.celda_pinturas, parent, false);
         PinturasViewHolder pinturasViewHolder = new PinturasViewHolder(itemView);
@@ -86,38 +89,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
 
         public void cargarDatos(Pintura pintura) {
 
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReference();
-            StorageReference imageRef;
-
-            imageRef = storageRef.child(pintura.getImage());
             textViewNombre.setText(pintura.getName());
 
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference().child(pintura.getImage());
 
+            Glide.with(context).using(new FirebaseImageLoader()).load(storageRef).into(imageViewFotoPintura);
 
-
-
-
-            File localFile = null;
-            try {
-                localFile = File.createTempFile("images", "png");
-                final File finalLocalFile = localFile;
-                imageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        // Local temp file has been created
-                        Bitmap bitmapDeImagen = BitmapFactory.decodeFile(finalLocalFile.getAbsolutePath());
-                        imageViewFotoPintura.setImageBitmap(bitmapDeImagen);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle any errors
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
     }

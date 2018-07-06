@@ -2,6 +2,7 @@ package com.example.dh.entregableandroid2.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,8 +34,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private String idDelArtista;
     private String nombreDelArtista;
     private RecyclerViewAdapter.EscuchadorDePinturas escuchadorDePinturas = this;
-    private TextView textViewNombreArtistaEnPinturas;
-    private ImageButton buttonAtras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +51,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar_main);
         setSupportActionBar(myToolbar);
+        myToolbar.setTitle(NOMBRE);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
-        buttonAtras = findViewById(R.id.buttonAtras);
 
-        buttonAtras.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -69,9 +64,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         nombreDelArtista = bundle.getString(NOMBRE);
 
 
-        textViewNombreArtistaEnPinturas = findViewById(R.id.textViewNombreArtistaEnPinturas);
-
-        textViewNombreArtistaEnPinturas.setText(nombreDelArtista);
 
         cargarPinturas();
 
@@ -134,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
         Bundle bundle = new Bundle();
         bundle.putString("nombre", pintura.getName());
         bundle.putString("artistId", pintura.getArtistId());
+        bundle.putString("foto", pintura.getImage());
 
         intent.putExtras(bundle);
         startActivity(intent);
