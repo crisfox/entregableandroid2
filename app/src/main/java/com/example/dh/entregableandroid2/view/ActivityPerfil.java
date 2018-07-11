@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,6 +38,17 @@ public class ActivityPerfil extends AppCompatActivity {
             startActivity(intent);
             this.finish();
         }
+
+        Button button = findViewById(R.id.buttonChat);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ActivityPerfil.this, ActivityChat.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar_perfil);

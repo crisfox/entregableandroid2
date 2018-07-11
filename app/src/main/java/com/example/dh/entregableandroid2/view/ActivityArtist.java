@@ -70,49 +70,6 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
 
     }
 
-
-    public void EscribirArtista(View view) {
-        DatabaseReference mDatabase;
-
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabase = firebaseDatabase.getReference();
-
-        Mensaje unMensaje = new Mensaje("Este es un mensaje", "Cristian");
-        mDatabase.setValue(unMensaje);
-
-    }
-
-    public void leerArtista() {
-        DatabaseReference mDatabase;
-
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabase = firebaseDatabase.getReference();
-        DatabaseReference reference = mDatabase.child("artists").child("1");
-
-        ValueEventListener artistListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                Artist artist = dataSnapshot.getValue(Artist.class);
-                Toast.makeText(ActivityArtist.this, artist.toString(), Toast.LENGTH_LONG).show();
-
-                textViewNombreArtist.setText(artist.getName());
-                textViewNacionalidadArtist.setText(artist.getNationality());
-
-                // ...
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-
-        };
-        reference.addListenerForSingleValueEvent(artistListener);
-    }
-
-
     public void leerListaDeArtistas() {
 
         DatabaseReference mDatabase;
@@ -197,8 +154,5 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
-
 
 }
