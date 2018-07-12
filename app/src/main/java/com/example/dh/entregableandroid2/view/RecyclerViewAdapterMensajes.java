@@ -15,9 +15,12 @@ import com.bumptech.glide.Glide;
 import com.example.dh.entregableandroid2.R;
 import com.example.dh.entregableandroid2.model.pojo.Pintura;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,10 +31,23 @@ public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
 
     private List<ChatMessage> listaDeMensajes;
     private Context context;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
-    public RecyclerViewAdapterMensajes(List<ChatMessage> listaDeMensajes) {
-        this.listaDeMensajes = listaDeMensajes;
+    public RecyclerViewAdapterMensajes() {
+        this.listaDeMensajes = new ArrayList<>();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+       if(listaDeMensajes.get(position).getMessageUser().equals(user.getDisplayName())) {
+
+           return R.layout.message_user;
+
+       }else {
+           return R.layout.message;
+       }
+
     }
 
     @NonNull
@@ -39,7 +55,7 @@ public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
     public MensajesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View itemView = layoutInflater.inflate(R.layout.message, parent, false);
+        View itemView = layoutInflater.inflate(viewType, parent, false);
         MensajesViewHolder mensajesViewHolder = new MensajesViewHolder(itemView);
 
         return mensajesViewHolder;
@@ -81,6 +97,11 @@ public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
                     chatMessage.getMessageTime()));
         }
 
+    }
+
+    public void addMensaje(ChatMessage unMensaje){
+        listaDeMensajes.add(unMensaje);
+        notifyItemChanged(listaDeMensajes.size());
     }
 
 
