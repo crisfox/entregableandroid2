@@ -37,6 +37,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity
+            android:label="Detalles"
             android:name=".view.ActivityDetalle"
             android:parentActivityName=".view.ActivityDetalle" />
         <activity android:name=".view.ActivityChat"></activity>

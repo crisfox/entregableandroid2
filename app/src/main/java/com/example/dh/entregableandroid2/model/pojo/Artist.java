@@ -10,26 +10,24 @@ public class Artist {
     private String artistId;
     private String imagen;
     private String descripcion;
+    private String Influenced_by;
 
 
     public Artist() {
         //Para Firebase
     }
 
-    public Artist(String name, String nationality, String artistId, String imagen, String descripcion) {
+    public Artist(String name, String nationality, String artistId, String imagen, String descripcion, String Influenced_by) {
         this.name = name;
         this.nationality = nationality;
         this.artistId = artistId;
         this.imagen = imagen;
         this.descripcion = descripcion;
+        this.Influenced_by = Influenced_by;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public String getArtistId() {
-        return artistId;
+    public String getInfluenced_by() {
+        return Influenced_by;
     }
 
     @Override
@@ -40,7 +38,16 @@ public class Artist {
                 ", artistId='" + artistId + '\'' +
                 ", imagen='" + imagen + '\'' +
                 ", descripcion='" + descripcion + '\'' +
+                ", Influenced_by='" + Influenced_by + '\'' +
                 '}';
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public String getArtistId() {
+        return artistId;
     }
 
 

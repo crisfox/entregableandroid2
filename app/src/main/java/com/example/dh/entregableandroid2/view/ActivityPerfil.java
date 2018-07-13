@@ -46,7 +46,6 @@ public class ActivityPerfil extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ActivityPerfil.this, ActivityChat.class);
                 startActivity(intent);
-                finish();
             }
         });
 

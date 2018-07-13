@@ -46,6 +46,7 @@ public class ActivityDetalle extends AppCompatActivity {
     private TextView textViewDescripcionArtistaDetalle;
     private ImageView imageViewArtistaDetalle;
     private TextView textViewNacionalidadArtistaDetalle;
+    private TextView textViewInfluencedArtistaDetalle;
     private FirebaseStorage storage;
 
     private Toolbar myToolbar;
@@ -62,6 +63,7 @@ public class ActivityDetalle extends AppCompatActivity {
             startActivity(intent);
             this.finish();
         }
+
         leerListaDeArtistas();
         myToolbar = findViewById(R.id.my_toolbar_detalle);
         setSupportActionBar(myToolbar);
@@ -79,10 +81,9 @@ public class ActivityDetalle extends AppCompatActivity {
 
         storage = FirebaseStorage.getInstance();
 
-
         imageViewFotoPinturaDetalle = findViewById(R.id.imageViewFotoPinturaDetalle);
         textViewNombrePinturaDetalle = findViewById(R.id.textViewNombrePinturaDetalle);
-
+        textViewNombrePinturaDetalle.setText(nombre);
         StorageReference storageRefPintura = storage.getReference().child(foto);
         Glide.with(ActivityDetalle.this).using(new FirebaseImageLoader()).load(storageRefPintura).into(imageViewFotoPinturaDetalle);
 
@@ -92,6 +93,8 @@ public class ActivityDetalle extends AppCompatActivity {
         textViewNombreArtistaDetalle = findViewById(R.id.textViewNombreArtistaDetalle);
         textViewDescripcionArtistaDetalle = findViewById(R.id.textViewDescripcionArtistaDetalle);
         textViewNacionalidadArtistaDetalle = findViewById(R.id.textViewNacionalidadArtistaDetalle);
+        textViewInfluencedArtistaDetalle = findViewById(R.id.textViewInfluencedArtistaDetalle);
+
 
 
     }
@@ -126,6 +129,8 @@ public class ActivityDetalle extends AppCompatActivity {
                 textViewNombreArtistaDetalle.setText(artistaEncontrado.getName());
                 textViewDescripcionArtistaDetalle.setText(artistaEncontrado.getDescripcion());
                 textViewNacionalidadArtistaDetalle.setText(artistaEncontrado.getNationality());
+                textViewInfluencedArtistaDetalle.setText(artistaEncontrado.getInfluenced_by());
+
                 StorageReference storageRefArtista = storage.getReference().child(artistaEncontrado.getImagen());
                 Glide.with(ActivityDetalle.this).using(new FirebaseImageLoader()).load(storageRefArtista).into(imageViewArtistaDetalle);
 

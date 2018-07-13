@@ -1,20 +1,13 @@
 package com.example.dh.entregableandroid2.view;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.dh.entregableandroid2.R;
 import com.example.dh.entregableandroid2.model.pojo.Artist;
@@ -25,20 +18,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityArtist extends AppCompatActivity implements RecyclerViewAdapterArtistas.EscuchadorDeArtista {
-    private TextView textViewNombreArtist;
-    private TextView textViewNacionalidadArtist;
-    private TextView textViewEmailFacebook;
-    private Button buttonCerrarSesion;
 
     private RecyclerViewAdapterArtistas recyclerViewAdapterArtistas;
     private RecyclerView recyclerView;
     private List<Artist> listaDeArtistas;
     private RecyclerViewAdapterArtistas.EscuchadorDeArtista escuchadorDeArtista = this;
-
 
 
     @Override
@@ -55,18 +44,12 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
             this.finish();
         }
 
-
-
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-
-
         leerListaDeArtistas();
 
-
         recyclerView = findViewById(R.id.recyclerViewArtist);
-
 
     }
 
@@ -104,10 +87,9 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
         reference.addListenerForSingleValueEvent(valueEventListener);
 
 
-
     }
 
-    public void seteoDeRecycler(){
+    public void seteoDeRecycler() {
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(ActivityArtist.this, 2);
         recyclerView.setLayoutManager(layoutManager);

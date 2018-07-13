@@ -1,20 +1,19 @@
 package com.example.dh.entregableandroid2.view;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.dh.entregableandroid2.R;
-import com.example.dh.entregableandroid2.model.pojo.Artist;
-import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -22,39 +21,65 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class ActivityChat extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private List<ChatMessage> listaDeMensajes;
+    private DatabaseReference databaseReference;
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
     private RecyclerViewAdapterMensajes recyclerViewAdapterMensajes;
     private RecyclerView recyclerView;
-    private DatabaseReference databaseReference;
+    private EditText editTextCampoChat;
+    private FloatingActionButton floatingActionButtonEnviar;
+    private FloatingActionButton floatingActionButtonEnviarImagen;
+    private static final int PHOTO_SEND = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
-
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
         String idDelUsuario = user.getUid();
 
+        if (idDelUsuario == null) {
+            Intent intent = new Intent(ActivityChat.this, ActivityLogin.class);
+            startActivity(intent);
+            this.finish();
+        }
+
+        editTextCampoChat = findViewById(R.id.editTextMensaje);
         recyclerView = findViewById(R.id.recyclerViewDeLosMensajes);
-        leerListaDeMensajes();
+        floatingActionButtonEnviar = findViewById(R.id.fab);
+        floatingActionButtonEnviarImagen = findViewById(R.id.fabImagen);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("mensajes");
+        firebaseStorage = FirebaseStorage.getInstance();
+
+
+        editTextCampoChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollHaciaElUltimoMensaje();
+            }
+        });
+
+
+        seteoDeRecycler();
+        scrollHaciaElUltimoMensaje();
+
+
+
 
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ChatMessage chatMessage = dataSnapshot.getValue(ChatMessage.class);
                 recyclerViewAdapterMensajes.addMensaje(chatMessage);
-                recyclerView.scrollToPosition(recyclerViewAdapterMensajes.getItemCount() - 1);
+                scrollHaciaElUltimoMensaje();
             }
 
             @Override
@@ -78,39 +103,44 @@ public class ActivityChat extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton floatingActionButtonEnviar = findViewById(R.id.fab);
+
 
         floatingActionButtonEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText editTextCampoChat = findViewById(R.id.editTextMensaje);
 
 
                 String getTextEditText = editTextCampoChat.getText().toString();
-                ChatMessage chatMessage = new ChatMessage(getTextEditText, user.getDisplayName().toString());
 
+                if (getTextEditText.length() >= 1){
+                    ChatMessage chatMessage = new ChatMessage(getTextEditText);
 
-                recyclerViewAdapterMensajes.addMensaje(chatMessage);
+                    FirebaseDatabase.getInstance()
+                            .getReference()
+                            .child("mensajes")
+                            .push()
+                            .setValue(chatMessage);
 
+                    editTextCampoChat.setText("");
 
-                FirebaseDatabase.getInstance()
-                        .getReference()
-                        .child("mensajes")
-                        .push()
-                        .setValue(chatMessage);
+                    scrollHaciaElUltimoMensaje();
+                }else {
+                    Toast.makeText(ActivityChat.this,"El mensaje debe contener almenos un caracter", Toast.LENGTH_SHORT).show();
+                }
 
-                editTextCampoChat.setText("");
-
-                recyclerView.scrollToPosition(recyclerViewAdapterMensajes.getItemCount() - 1);
 
             }
         });
-    }
 
-    public void leerListaDeMensajes() {
-
-        seteoDeRecycler();
-
+        floatingActionButtonEnviarImagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+                i.setType("image/jpeg");
+                i.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
+                startActivityForResult(Intent.createChooser(i,"Selecciona una Imagen"), PHOTO_SEND);
+            }
+        });
     }
 
     public void seteoDeRecycler() {
@@ -123,4 +153,30 @@ public class ActivityChat extends AppCompatActivity {
         recyclerViewAdapterMensajes.notifyDataSetChanged();
     }
 
+    public void scrollHaciaElUltimoMensaje(){
+
+        recyclerView.scrollToPosition(recyclerViewAdapterMensajes.getItemCount() - 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PHOTO_SEND && resultCode == RESULT_OK){
+            Uri uri = data.getData();
+            storageReference = firebaseStorage.getReference("imagenes_chat");
+            final StorageReference imagenReferencia = storageReference.child(uri.getLastPathSegment());
+            imagenReferencia.putFile(uri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    mAuth = FirebaseAuth.getInstance();
+                    final FirebaseUser user = mAuth.getCurrentUser();
+                    Uri uri = taskSnapshot.getDownloadUrl();
+                    ChatMessage chatMessage = new ChatMessage(user.getDisplayName() + " ha enviado una foto.",uri.toString());
+                    databaseReference.push().setValue(chatMessage);
+                }
+            });
+
+        }
+
+    }
 }

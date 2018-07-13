@@ -23,6 +23,8 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.microedition.khronos.opengles.GL;
+
 /**
  * Created by DH on 11/6/2018.
  */
@@ -78,6 +80,8 @@ public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
         private TextView textViewUser;
         private TextView textViewMensaje;
         private TextView textViewTiempo;
+        private ImageView imageViewUser;
+        private ImageView imageViewImagenEnviadaMensaje;
 
         public MensajesViewHolder(View itemView) {
             super(itemView);
@@ -85,6 +89,8 @@ public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
             textViewUser = itemView.findViewById(R.id.message_user);
             textViewMensaje = itemView.findViewById(R.id.message_text);
             textViewTiempo = itemView.findViewById(R.id.message_time);
+            imageViewUser = itemView.findViewById(R.id.imageViewUser);
+            imageViewImagenEnviadaMensaje = itemView.findViewById(R.id.imageViewImagenEnviada);
 
 
         }
@@ -93,8 +99,16 @@ public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
 
             textViewUser.setText(chatMessage.getMessageUser());
             textViewMensaje.setText(chatMessage.getMessageText());
+
+            Glide.with(context).load(chatMessage.getImagenUser()).into(imageViewUser);
             textViewTiempo.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
                     chatMessage.getMessageTime()));
+            if (chatMessage.getUrlImagen() != null){
+                imageViewImagenEnviadaMensaje.setVisibility(View.VISIBLE);
+                textViewMensaje.setVisibility(View.GONE);
+                Glide.with(context).load(chatMessage.getUrlImagen()).into(imageViewImagenEnviadaMensaje);
+            }
+
         }
 
     }

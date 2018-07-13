@@ -1,99 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.dh.entregableandroid2.view.ActivityDetalle">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/linearLayoutTitulo"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        tools:context="com.example.dh.entregableandroid2.view.ActivityDetalle">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/my_toolbar_detalle"
+
+        <LinearLayout
+            android:id="@+id/linearLayoutTitulo"
             android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            android:background="@color/primary"
-            app:titleTextColor="#ffffff" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/my_toolbar_detalle"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:background="@color/primary"
+                app:titleTextColor="#ffffff" />
+
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textViewNombrePinturaDetalle"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/imageViewFotoPinturaDetalle"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_vertical"
-            android:hint="NOMBRE DE LA PINTURA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linearLayoutTitulo"
+            android:padding="5dp"
+            android:text="Nombre de la pintura"
             android:textAlignment="center"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            android:textColor="@color/primary_text"/>
+
+        <ImageView
+            android:id="@+id/imageViewFotoPinturaDetalle"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/textViewNombrePinturaDetalle"
+            android:layout_marginBottom="10dp"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:id="@+id/linea"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/imageViewFotoPinturaDetalle"
+            android:background="#000"
+            android:orientation="horizontal" />
+
+
+        <ImageView
+            android:id="@+id/imageViewFotoArtistaDetalle"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:layout_below="@+id/linea"
+            android:layout_margin="10dp"
+            android:scaleType="centerCrop" />
+
+
+        <TextView
+            android:id="@+id/textViewNombreArtistaDetalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageViewFotoArtistaDetalle"
+            android:layout_marginRight="5dp"
+            android:layout_toRightOf="@+id/imageViewFotoArtistaDetalle"
+            android:hint="NOMBRE DEL ARTISTA"
             android:textColor="@color/primary_text"
-            android:textSize="24dp" />
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imageViewFotoPinturaDetalle"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/linearLayoutTitulo"
-        android:layout_marginBottom="10dp"
-        android:scaleType="centerCrop" />
-
-    <LinearLayout
-        android:id="@+id/linea"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/imageViewFotoPinturaDetalle"
-        android:background="#000"
-        android:orientation="horizontal" />
+            android:textSize="20dp"
+            android:textStyle="bold"/>
 
 
-    <ImageView
-        android:id="@+id/imageViewFotoArtistaDetalle"
-        android:layout_width="150dp"
-        android:layout_height="200dp"
-        android:layout_below="@+id/linea"
-        android:layout_margin="10dp"
-        android:scaleType="centerCrop" />
+        <TextView
+            android:id="@+id/textViewNacionalidadArtistaDetalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewNombreArtistaDetalle"
 
+            android:layout_toRightOf="@+id/imageViewFotoArtistaDetalle"
+            android:hint="NOMBRE DEL ARTISTA"
+            android:textColor="@color/secondary_text"
+            android:textStyle="italic"
+            android:textSize="13dp" />
 
-    <TextView
-        android:id="@+id/textViewNombreArtistaDetalle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageViewFotoArtistaDetalle"
-        android:layout_marginRight="5dp"
-        android:layout_toRightOf="@+id/imageViewFotoArtistaDetalle"
-        android:hint="NOMBRE DEL ARTISTA"
-        android:textColor="@color/primary_text"
-        android:textSize="20dp" />
+        <TextView
+            android:id="@+id/textoEstatico"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewNacionalidadArtistaDetalle"
+            android:layout_alignLeft="@+id/textViewNacionalidadArtistaDetalle"
+            android:text="Influenciado por: "
+            android:textColor="@color/secondary_text"
+            android:textStyle="italic"
+            android:textSize="13dp" />
 
+        <TextView
+            android:id="@+id/textViewInfluencedArtistaDetalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textoEstatico"
+            android:layout_alignBottom="@+id/textoEstatico"
+            android:layout_toEndOf="@+id/textoEstatico"
+            android:hint="Influencia"
+            android:textColor="@color/primary_text"
+            android:textSize="13dp"
+            android:textStyle="italic" />
 
-    <TextView
-        android:id="@+id/textViewNacionalidadArtistaDetalle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewNombreArtistaDetalle"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@+id/imageViewFotoArtistaDetalle"
-        android:hint="NOMBRE DEL ARTISTA"
-        android:textColor="@color/primary_text"
+        <TextView
+            android:id="@+id/textViewDescripcionArtistaDetalle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageViewFotoArtistaDetalle"
+            android:hint="Descripcion del artista"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@color/secondary_text"
+            android:textSize="14dp" />
 
-        android:textSize="12dp" />
-
-    <TextView
-        android:id="@+id/textViewDescripcionArtistaDetalle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewNombreArtistaDetalle"
-        android:layout_below="@+id/textViewNacionalidadArtistaDetalle"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:hint="Descripcion del artista"
-        android:textColor="@color/primary_text"
-        android:textSize="12dp" />
-
-</RelativeLayout>
+    </RelativeLayout>
+</ScrollView>
