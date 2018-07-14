@@ -40,7 +40,7 @@
             android:label="Detalles"
             android:name=".view.ActivityDetalle"
             android:parentActivityName=".view.ActivityDetalle" />
-        <activity android:name=".view.ActivityChat"></activity>
+        <activity android:label="Chat" android:name=".view.ActivityChat" android:parentActivityName=".view.ActivityPerfil"></activity>
     </application>
 
 </manifest>

@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     tools:context="com.example.dh.entregableandroid2.view.ActivityChat">
 
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar_chat"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/primary"
+        app:titleTextColor="#ffffff" />
+
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,9 +60,9 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/my_toolbar_chat"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_above="@id/fab"
         android:dividerHeight="16dp"

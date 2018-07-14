@@ -1,4 +1,4 @@
-package com.example.dh.entregableandroid2.view;
+package com.example.dh.entregableandroid2.view.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -100,6 +100,12 @@ public class RecyclerViewAdapterArtistas extends RecyclerView.Adapter {
 
         }
 
+    }
+
+    public void setArtistas(List<Artist> listaDeArtistas){
+        this.listaDeArtistas.clear();
+        this.listaDeArtistas.addAll(listaDeArtistas);
+        notifyDataSetChanged();
     }
 
     public interface EscuchadorDeArtista {

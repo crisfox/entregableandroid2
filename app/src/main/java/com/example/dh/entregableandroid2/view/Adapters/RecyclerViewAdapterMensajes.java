@@ -1,4 +1,4 @@
-package com.example.dh.entregableandroid2.view;
+package com.example.dh.entregableandroid2.view.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,22 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.dh.entregableandroid2.R;
-import com.example.dh.entregableandroid2.model.pojo.Pintura;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.example.dh.entregableandroid2.model.pojo.ChatMessage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.microedition.khronos.opengles.GL;
 
 /**
  * Created by DH on 11/6/2018.

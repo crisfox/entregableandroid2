@@ -10,7 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.dh.entregableandroid2.R;
+import com.example.dh.entregableandroid2.controller.ControllerArtists;
 import com.example.dh.entregableandroid2.model.pojo.Artist;
+import com.example.dh.entregableandroid2.view.Adapters.RecyclerViewAdapterArtistas;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.google.firebase.database.DataSnapshot;
@@ -75,6 +77,7 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
                 }
 
                 seteoDeRecycler();
+
             }
 
 
@@ -95,6 +98,8 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
         recyclerView.setLayoutManager(layoutManager);
         recyclerViewAdapterArtistas = new RecyclerViewAdapterArtistas(listaDeArtistas, escuchadorDeArtista);
         recyclerView.setAdapter(recyclerViewAdapterArtistas);
+        ControllerArtists controllerArtists = new ControllerArtists(getApplicationContext());
+        recyclerViewAdapterArtistas.setArtistas(controllerArtists.getArtists());
 
         recyclerViewAdapterArtistas.notifyDataSetChanged();
     }
@@ -136,5 +141,8 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+
 
 }

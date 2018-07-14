@@ -1,4 +1,4 @@
-package com.example.dh.entregableandroid2.view;
+package com.example.dh.entregableandroid2.view.Adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;

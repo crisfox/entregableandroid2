@@ -7,18 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.example.dh.entregableandroid2.R;
 import com.example.dh.entregableandroid2.controller.ControllerPinturas;
 import com.example.dh.entregableandroid2.model.pojo.Pintura;
 import com.example.dh.entregableandroid2.util.ResultListener;
+import com.example.dh.entregableandroid2.view.Adapters.RecyclerViewAdapter;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 
@@ -51,10 +47,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar_main);
         setSupportActionBar(myToolbar);
-        myToolbar.setTitle(NOMBRE);
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-
 
 
         Intent intent = getIntent();
@@ -62,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         idDelArtista = bundle.getString(ARTIST_ID);
         nombreDelArtista = bundle.getString(NOMBRE);
-
 
 
         cargarPinturas();

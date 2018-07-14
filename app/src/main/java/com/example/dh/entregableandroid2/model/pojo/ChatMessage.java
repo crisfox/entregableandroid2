@@ -1,4 +1,4 @@
-package com.example.dh.entregableandroid2.view;
+package com.example.dh.entregableandroid2.model.pojo;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -10,7 +10,6 @@ import java.util.Date;
  */
 
 public class ChatMessage {
-
 
     private String messageText;
     private String messageUser;

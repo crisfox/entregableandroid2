@@ -1,22 +1,43 @@
 package com.example.dh.entregableandroid2.model.pojo;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 /**
  * Created by Cristian on 22/6/2018.
  */
-
+@Entity
 public class Artist {
+    @PrimaryKey
+    @NonNull
     private String name;
-    private String nationality;
+
+    @Ignore
     private String artistId;
+    @Ignore
+    private String nationality;
+    @Ignore
     private String imagen;
+    @Ignore
     private String descripcion;
+    @Ignore
     private String Influenced_by;
 
 
+
+    public Artist(String name) {
+        this.name = name;
+    }
+
+    @Ignore
     public Artist() {
         //Para Firebase
     }
 
+
+    @Ignore
     public Artist(String name, String nationality, String artistId, String imagen, String descripcion, String Influenced_by) {
         this.name = name;
         this.nationality = nationality;

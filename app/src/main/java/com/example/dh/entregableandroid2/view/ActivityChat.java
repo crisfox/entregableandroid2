@@ -4,16 +4,22 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.dh.entregableandroid2.R;
+import com.example.dh.entregableandroid2.model.pojo.ChatMessage;
+import com.example.dh.entregableandroid2.view.Adapters.RecyclerViewAdapterMensajes;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -51,6 +57,11 @@ public class ActivityChat extends AppCompatActivity {
             startActivity(intent);
             this.finish();
         }
+
+        Toolbar myToolbar = findViewById(R.id.my_toolbar_chat);
+        setSupportActionBar(myToolbar);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
         editTextCampoChat = findViewById(R.id.editTextMensaje);
         recyclerView = findViewById(R.id.recyclerViewDeLosMensajes);
@@ -180,5 +191,29 @@ public class ActivityChat extends AppCompatActivity {
 
     private void mantenerLaVistaDelRecyclerHaciaArriba(){
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_perfil:
+                Intent intentPerfil = new Intent(ActivityChat.this, ActivityPerfil.class);
+                startActivity(intentPerfil);
+                return true;
+            case R.id.action_cerrarsesion:
+                LoginManager.getInstance().logOut();
+                Intent intentLogin = new Intent(ActivityChat.this, ActivityLogin.class);
+                startActivity(intentLogin);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
