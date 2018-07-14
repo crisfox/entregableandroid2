@@ -107,6 +107,8 @@ public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
                 imageViewImagenEnviadaMensaje.setVisibility(View.VISIBLE);
                 textViewMensaje.setVisibility(View.GONE);
                 Glide.with(context).load(chatMessage.getUrlImagen()).into(imageViewImagenEnviadaMensaje);
+            }else{
+                imageViewImagenEnviadaMensaje.setVisibility(View.GONE);
             }
 
         }

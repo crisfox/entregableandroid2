@@ -38,7 +38,7 @@ public class ChatMessage {
     }
 
     public ChatMessage(){
-
+        //Para Firebase
     }
 
     public String getUrlImagen() {

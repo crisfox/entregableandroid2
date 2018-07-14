@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -67,12 +68,9 @@ public class ActivityChat extends AppCompatActivity {
             }
         });
 
-
         seteoDeRecycler();
         scrollHaciaElUltimoMensaje();
-
-
-
+        mantenerLaVistaDelRecyclerHaciaArriba();
 
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
@@ -178,5 +176,9 @@ public class ActivityChat extends AppCompatActivity {
 
         }
 
+    }
+
+    private void mantenerLaVistaDelRecyclerHaciaArriba(){
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 }

@@ -36,7 +36,6 @@ public class ActivityLogin extends AppCompatActivity {
 
     private CallbackManager callbackManager;
     private Button loginButtonFacebook;
-    public static String EMAIL = "email";
     private FirebaseAuth mAuth;
 
     @Override
