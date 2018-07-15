@@ -92,7 +92,6 @@ public class RecyclerViewAdapterArtistas extends RecyclerView.Adapter {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference().child(artist.getImagen());
 
-
             Glide.with(context).using(new FirebaseImageLoader()).load(storageRef).into(imageViewFotoArtista);
 
             textViewNombreArtist.setText(artist.getName());

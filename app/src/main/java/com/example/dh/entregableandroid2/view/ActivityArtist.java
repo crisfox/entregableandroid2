@@ -1,6 +1,9 @@
 package com.example.dh.entregableandroid2.view;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.dh.entregableandroid2.R;
 import com.example.dh.entregableandroid2.controller.ControllerArtists;
@@ -31,6 +35,7 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
     private List<Artist> listaDeArtistas;
     private RecyclerViewAdapterArtistas.EscuchadorDeArtista escuchadorDeArtista = this;
 
+    private ControllerArtists controllerArtists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,18 +49,24 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
             Intent intent = new Intent(ActivityArtist.this, ActivityLogin.class);
             startActivity(intent);
             this.finish();
+            return;
         }
-
+        hayInternet();
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        recyclerView = findViewById(R.id.recyclerViewArtist);
+
+        listaDeArtistas = new ArrayList<>();
         leerListaDeArtistas();
 
-        recyclerView = findViewById(R.id.recyclerViewArtist);
 
     }
 
     public void leerListaDeArtistas() {
+
+        if (false){
+
 
         DatabaseReference mDatabase;
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -67,12 +78,13 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                listaDeArtistas = new ArrayList<>();
 
                 for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
 
                     Artist artist = dataSnapshotChild.getValue(Artist.class);
                     listaDeArtistas.add(artist);
+                    controllerArtists = new ControllerArtists(getApplicationContext());
+                    controllerArtists.addArtist(artist);
 
                 }
 
@@ -83,13 +95,17 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
 
         };
         reference.addListenerForSingleValueEvent(valueEventListener);
 
 
+        }else {
+            controllerArtists = new ControllerArtists(getApplicationContext());
+            seteoDeRecycler();
+            recyclerViewAdapterArtistas.setArtistas(controllerArtists.getArtists());
+        }
     }
 
     public void seteoDeRecycler() {
@@ -98,8 +114,6 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
         recyclerView.setLayoutManager(layoutManager);
         recyclerViewAdapterArtistas = new RecyclerViewAdapterArtistas(listaDeArtistas, escuchadorDeArtista);
         recyclerView.setAdapter(recyclerViewAdapterArtistas);
-        ControllerArtists controllerArtists = new ControllerArtists(getApplicationContext());
-        recyclerViewAdapterArtistas.setArtistas(controllerArtists.getArtists());
 
         recyclerViewAdapterArtistas.notifyDataSetChanged();
     }
@@ -143,6 +157,19 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
     }
 
 
+    //ROOM
 
+    public boolean hayInternet(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            Toast.makeText(ActivityArtist.this,"HAY INTERNET FELICITACIONES",Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            Toast.makeText(ActivityArtist.this,"ESTAS SIN INTERNET PELOTUDO",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
 
 }
