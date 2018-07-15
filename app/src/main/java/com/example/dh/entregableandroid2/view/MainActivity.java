@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     private String nombreDelArtista;
     private RecyclerViewAdapter.EscuchadorDePinturas escuchadorDePinturas = this;
 
+    private ControllerPinturas controllerPinturas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +69,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
     }
 
     public void cargarPinturas() {
-        ControllerPinturas controllerPinturas = new ControllerPinturas();
+
+        controllerPinturas = new ControllerPinturas(getApplicationContext());
 
         final ResultListener<List<Pintura>> escuchadorDeLaVista = new ResultListener<List<Pintura>>() {
             @Override
@@ -86,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             }
         };
         controllerPinturas.obtenerPinturas(escuchadorDeLaVista);
+
     }
 
     @Override

@@ -51,7 +51,6 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
             this.finish();
             return;
         }
-        hayInternet();
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
@@ -65,7 +64,7 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
 
     public void leerListaDeArtistas() {
 
-        if (false){
+        if (hayInternet()){
 
 
         DatabaseReference mDatabase;
@@ -84,6 +83,7 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
                     Artist artist = dataSnapshotChild.getValue(Artist.class);
                     listaDeArtistas.add(artist);
                     controllerArtists = new ControllerArtists(getApplicationContext());
+                    controllerArtists.removeArtist(artist);
                     controllerArtists.addArtist(artist);
 
                 }
@@ -164,10 +164,10 @@ public class ActivityArtist extends AppCompatActivity implements RecyclerViewAda
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
-            Toast.makeText(ActivityArtist.this,"HAY INTERNET FELICITACIONES",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"HAY INTERNET FELICITACIONES",Toast.LENGTH_SHORT).show();
             return true;
         } else {
-            Toast.makeText(ActivityArtist.this,"ESTAS SIN INTERNET PELOTUDO",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"ESTAS SIN INTERNET PELOTUDO",Toast.LENGTH_SHORT).show();
             return false;
         }
     }
