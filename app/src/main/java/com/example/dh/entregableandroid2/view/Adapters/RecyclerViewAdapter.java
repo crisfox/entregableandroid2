@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.dh.entregableandroid2.R;
+import com.example.dh.entregableandroid2.model.pojo.Artist;
 import com.example.dh.entregableandroid2.model.pojo.Pintura;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -98,6 +99,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
 
         }
 
+    }
+    public void setPinturas(List<Pintura> listaDePinturas){
+        this.listaDePinturas.clear();
+        this.listaDePinturas.addAll(listaDePinturas);
+        notifyDataSetChanged();
     }
 
 

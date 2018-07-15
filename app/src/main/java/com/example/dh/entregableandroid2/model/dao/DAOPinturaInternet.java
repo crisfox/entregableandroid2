@@ -1,5 +1,6 @@
 package com.example.dh.entregableandroid2.model.dao;
 
+import com.example.dh.entregableandroid2.controller.ControllerPinturas;
 import com.example.dh.entregableandroid2.model.pojo.ContainerPintura;
 import com.example.dh.entregableandroid2.model.pojo.Pintura;
 import com.example.dh.entregableandroid2.util.ResultListener;
@@ -48,4 +49,5 @@ public class DAOPinturaInternet {
             }
         });
     }
+
 }

@@ -1,6 +1,9 @@
 package com.example.dh.entregableandroid2.view;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.dh.entregableandroid2.R;
 import com.example.dh.entregableandroid2.controller.ControllerPinturas;
@@ -77,15 +81,23 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
             public void finish(List<Pintura> resultado) {
                 List<Pintura> listaDePinturasPorArtista = new ArrayList<>();
 
-                for (Pintura pintura :
-                        resultado) {
-                    if (pintura.getArtistId().equals(idDelArtista)) {
-                        listaDePinturasPorArtista.add(pintura);
+                if (hayInternet()){
+                    for (Pintura pintura : resultado) {
+                        if (pintura.getArtistId().equals(idDelArtista)) {
+                            controllerPinturas.removePintura(pintura);
+                            controllerPinturas.addPintura(pintura);
+                            listaDePinturasPorArtista.add(pintura);
+                        }
                     }
+                    recyclerViewAdapter = new RecyclerViewAdapter(listaDePinturasPorArtista, escuchadorDePinturas);
+                    recyclerView.setAdapter(recyclerViewAdapter);
+
+                    if (!hayInternet()){
+                        recyclerViewAdapter.setPinturas(listaDePinturasPorArtista);
+                    }
+
                 }
 
-                recyclerViewAdapter = new RecyclerViewAdapter(listaDePinturasPorArtista, escuchadorDePinturas);
-                recyclerView.setAdapter(recyclerViewAdapter);
             }
         };
         controllerPinturas.obtenerPinturas(escuchadorDeLaVista);
@@ -127,5 +139,18 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewAdapt
 
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    public boolean hayInternet(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            Toast.makeText(this,"HAY INTERNET FELICITACIONES",Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            Toast.makeText(this,"ESTAS SIN INTERNET PELOTUDO",Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 }
