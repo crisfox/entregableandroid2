@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
-import com.example.dh.entregableandroid2.model.pojo.Artist;
+import com.example.dh.entregableandroid2.model.pojo.ChatMessage;
 import com.example.dh.entregableandroid2.util.ResultListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,47 +20,49 @@ import java.util.List;
  * Created by Cristian on 16/7/2018.
  */
 
-public class ControllerArtists {
+public class ControllerMensajes {
 
     Context context;
 
-    public ControllerArtists(Context context) {
+    public ControllerMensajes(Context context) {
         this.context = context;
     }
 
-    public void obtenerArtistas(final ResultListener<List<Artist>> escuchadorVista) {
+    public void obtenerMensajes(final ResultListener<List<ChatMessage>> escuchadorVista) {
 
         if (hayInternet()) {                                                                          //Si hay internet
-            final ArrayList<Artist> listado = new ArrayList<>();
+            final ArrayList<ChatMessage> listado = new ArrayList<>();
             DatabaseReference mDataBase;
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             mDataBase = firebaseDatabase.getReference();
-            DatabaseReference reference = mDataBase.child("artists");
+            DatabaseReference reference = mDataBase.child("mensajes");
             ValueEventListener valueEventListener = new ValueEventListener() {
+
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    ControllerRoomArtists controllerRoomArtists = new ControllerRoomArtists(context);
+                    ControllerRoomMensajes controllerRoomMensajes = new ControllerRoomMensajes(context);
                     for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
-                        Artist artistaLeido = dataSnapshotChild.getValue(Artist.class);
-                        listado.add(artistaLeido);
+                        ChatMessage chatMessageLeido = dataSnapshotChild.getValue(ChatMessage.class);
+                        listado.add(chatMessageLeido);
 
-                        controllerRoomArtists.removeArtist(artistaLeido);
-                        controllerRoomArtists.addArtist(artistaLeido);
+                        controllerRoomMensajes.removeMensaje(chatMessageLeido);
+                        controllerRoomMensajes.addMensajeAlRoom(chatMessageLeido);
                     }
                     escuchadorVista.finish(listado);
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    Toast.makeText(context, "Error en Controller Artists", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(context, "paso algoo", Toast.LENGTH_SHORT).show();
                 }
+
             };
             reference.addValueEventListener(valueEventListener);
 
-
         } else {                                                                                    //Si no hay internet
-            ControllerRoomArtists controllerRoomArtists = new ControllerRoomArtists(context);
-            escuchadorVista.finish(controllerRoomArtists.getArtists());
+            ControllerRoomMensajes controllerRoomMensajes = new ControllerRoomMensajes(context);
+            escuchadorVista.finish(controllerRoomMensajes.getMensajes());
         }
     }
 

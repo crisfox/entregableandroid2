@@ -17,7 +17,7 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,14 +28,12 @@ public class RecyclerViewAdapterArtistas extends RecyclerView.Adapter {
 
     private List<Artist> listaDeArtistas;
     private EscuchadorDeArtista escuchadorDeArtista;
-
     private ImageView imageViewFotoArtista;
     private Context context;
 
 
-
-    public RecyclerViewAdapterArtistas(List<Artist> listaDeArtistas, EscuchadorDeArtista escuchadorDeArtista) {
-        this.listaDeArtistas = listaDeArtistas;
+    public RecyclerViewAdapterArtistas(EscuchadorDeArtista escuchadorDeArtista) {
+        this.listaDeArtistas = new ArrayList<>();
         this.escuchadorDeArtista = escuchadorDeArtista;
     }
 
@@ -101,7 +99,7 @@ public class RecyclerViewAdapterArtistas extends RecyclerView.Adapter {
 
     }
 
-    public void setArtistas(List<Artist> listaDeArtistas){
+    public void setArtistas(List<Artist> listaDeArtistas) {
         this.listaDeArtistas.clear();
         this.listaDeArtistas.addAll(listaDeArtistas);
         notifyDataSetChanged();

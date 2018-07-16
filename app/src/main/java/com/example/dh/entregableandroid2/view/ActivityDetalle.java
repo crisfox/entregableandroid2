@@ -7,26 +7,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.dh.entregableandroid2.R;
+import com.example.dh.entregableandroid2.controller.ControllerArtists;
 import com.example.dh.entregableandroid2.model.pojo.Artist;
+import com.example.dh.entregableandroid2.util.ResultListener;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityDetalle extends AppCompatActivity {
@@ -39,7 +33,6 @@ public class ActivityDetalle extends AppCompatActivity {
     private ImageView imageViewFotoPinturaDetalle;
     private String artistId;
 
-    private List<Artist> listaDeArtistas;
     private Artist artistaEncontrado;
 
     private TextView textViewNombreArtistaDetalle;
@@ -64,7 +57,6 @@ public class ActivityDetalle extends AppCompatActivity {
             this.finish();
         }
 
-        leerListaDeArtistas();
         myToolbar = findViewById(R.id.my_toolbar_detalle);
         setSupportActionBar(myToolbar);
         ActionBar ab = getSupportActionBar();
@@ -78,7 +70,6 @@ public class ActivityDetalle extends AppCompatActivity {
         artistId = bundle.getString(ARTIST_ID);
         String foto = bundle.getString(FOTO);
 
-
         storage = FirebaseStorage.getInstance();
 
         imageViewFotoPinturaDetalle = findViewById(R.id.imageViewFotoPinturaDetalle);
@@ -87,41 +78,23 @@ public class ActivityDetalle extends AppCompatActivity {
         StorageReference storageRefPintura = storage.getReference().child(foto);
         Glide.with(ActivityDetalle.this).using(new FirebaseImageLoader()).load(storageRefPintura).into(imageViewFotoPinturaDetalle);
 
-
-
         imageViewArtistaDetalle = findViewById(R.id.imageViewFotoArtistaDetalle);
         textViewNombreArtistaDetalle = findViewById(R.id.textViewNombreArtistaDetalle);
         textViewDescripcionArtistaDetalle = findViewById(R.id.textViewDescripcionArtistaDetalle);
         textViewNacionalidadArtistaDetalle = findViewById(R.id.textViewNacionalidadArtistaDetalle);
         textViewInfluencedArtistaDetalle = findViewById(R.id.textViewInfluencedArtistaDetalle);
 
-
-
+        leerListaDeArtistas();
     }
 
     public void leerListaDeArtistas() {
 
-        DatabaseReference mDatabase;
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabase = firebaseDatabase.getReference();
-
-        DatabaseReference reference = mDatabase.child("artists");
-
-        ValueEventListener valueEventListener = new ValueEventListener() {
+        final ControllerArtists controllerArtists = new ControllerArtists(getApplicationContext());
+        controllerArtists.obtenerArtistas(new ResultListener<List<Artist>>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                listaDeArtistas = new ArrayList<>();
-
-                for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
-
-                    Artist artist = dataSnapshotChild.getValue(Artist.class);
-                    listaDeArtistas.add(artist);
-
-                }
-
-                for (Artist artista : listaDeArtistas) {
-                    if (artistId.equals(artista.getArtistId())){
+            public void finish(List<Artist> resultado) {
+                for (Artist artista : resultado) {
+                    if (artistId.equals(artista.getArtistId())) {
                         artistaEncontrado = artista;
                         break;
                     }
@@ -135,16 +108,7 @@ public class ActivityDetalle extends AppCompatActivity {
                 Glide.with(ActivityDetalle.this).using(new FirebaseImageLoader()).load(storageRefArtista).into(imageViewArtistaDetalle);
 
             }
-
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-        };
-        reference.addListenerForSingleValueEvent(valueEventListener);
-
+        });
     }
 
     @Override

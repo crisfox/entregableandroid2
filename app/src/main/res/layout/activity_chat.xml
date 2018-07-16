@@ -26,7 +26,7 @@
         android:layout_alignParentEnd="true"
         app:fabSize="mini"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
         app:fabSize="mini"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp" />
 
 
     <android.support.design.widget.TextInputLayout
@@ -55,8 +55,7 @@
             android:layout_height="wrap_content"
             android:hint="Input"
             android:id="@+id/editTextMensaje"
-            android:focusableInTouchMode="true"
-            />
+            android:focusableInTouchMode="true" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -68,5 +67,5 @@
         android:dividerHeight="16dp"
         android:divider="@android:color/transparent"
         android:id="@+id/recyclerViewDeLosMensajes"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp" />
 </RelativeLayout>

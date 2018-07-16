@@ -1,20 +1,38 @@
 package com.example.dh.entregableandroid2.model.pojo;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 /**
  * Created by Cristian on 9/7/2018.
  */
-
+@Entity
 public class ChatMessage {
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    int id;
 
     private String messageText;
+
+    @ColumnInfo(name = "messageUser")
     private String messageUser;
-    private long messageTime;
+
+    @ColumnInfo(name = "messageTime")
+    private String messageTime;
+
+    @ColumnInfo(name = "imagenUser")
     private String imagenUser;
+
+    @ColumnInfo(name = "urlImagen")
     private String urlImagen;
 
     public ChatMessage(String messageText, String urlImagen) {
@@ -24,20 +42,34 @@ public class ChatMessage {
         this.urlImagen = urlImagen;
 
         // Initialize to current time
-        messageTime = new Date().getTime();
+        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        messageTime = currentDateTimeString;
     }
 
+    @Ignore
     public ChatMessage(String messageText) {
         this.messageText = messageText;
         this.messageUser = obtenerUsuario().getDisplayName();
         this.imagenUser = obtenerUsuario().getPhotoUrl().toString();
 
         // Initialize to current time
-        messageTime = new Date().getTime();
+        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        messageTime = currentDateTimeString;
+
     }
 
-    public ChatMessage(){
+    @Ignore
+    public ChatMessage() {
         //Para Firebase
+    }
+
+    @NonNull
+    public int getId() {
+        return id;
+    }
+
+    public void setId(@NonNull int id) {
+        this.id = id;
     }
 
     public String getUrlImagen() {
@@ -56,9 +88,6 @@ public class ChatMessage {
         return messageText;
     }
 
-    public void setMessageText(String messageText) {
-        this.messageText = messageText;
-    }
 
     public String getMessageUser() {
         return messageUser;
@@ -68,15 +97,15 @@ public class ChatMessage {
         this.messageUser = messageUser;
     }
 
-    public long getMessageTime() {
+    public String getMessageTime() {
         return messageTime;
     }
 
-    public void setMessageTime(long messageTime) {
+    public void setMessageTime(String messageTime) {
         this.messageTime = messageTime;
     }
 
-    private FirebaseUser obtenerUsuario(){
+    private FirebaseUser obtenerUsuario() {
         FirebaseAuth mAuth;
         mAuth = FirebaseAuth.getInstance();
         return mAuth.getCurrentUser();

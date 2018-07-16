@@ -17,20 +17,22 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.dh.entregableandroid2.R;
+import com.example.dh.entregableandroid2.controller.ControllerMensajes;
+import com.example.dh.entregableandroid2.controller.ControllerRoomMensajes;
 import com.example.dh.entregableandroid2.model.pojo.ChatMessage;
+import com.example.dh.entregableandroid2.util.ResultListener;
 import com.example.dh.entregableandroid2.view.Adapters.RecyclerViewAdapterMensajes;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.util.List;
 
 public class ActivityChat extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -43,6 +45,7 @@ public class ActivityChat extends AppCompatActivity {
     private FloatingActionButton floatingActionButtonEnviar;
     private FloatingActionButton floatingActionButtonEnviarImagen;
     private static final int PHOTO_SEND = 1;
+    private ControllerMensajes controllerMensajes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class ActivityChat extends AppCompatActivity {
             this.finish();
         }
 
+        controllerMensajes = new ControllerMensajes(getApplicationContext());
         Toolbar myToolbar = findViewById(R.id.my_toolbar_chat);
         setSupportActionBar(myToolbar);
         ActionBar ab = getSupportActionBar();
@@ -67,6 +71,7 @@ public class ActivityChat extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewDeLosMensajes);
         floatingActionButtonEnviar = findViewById(R.id.fab);
         floatingActionButtonEnviarImagen = findViewById(R.id.fabImagen);
+
 
         databaseReference = FirebaseDatabase.getInstance().getReference("mensajes");
         firebaseStorage = FirebaseStorage.getInstance();
@@ -80,39 +85,7 @@ public class ActivityChat extends AppCompatActivity {
         });
 
         seteoDeRecycler();
-        scrollHaciaElUltimoMensaje();
-        mantenerLaVistaDelRecyclerHaciaArriba();
-
-        databaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                ChatMessage chatMessage = dataSnapshot.getValue(ChatMessage.class);
-                recyclerViewAdapterMensajes.addMensaje(chatMessage);
-                scrollHaciaElUltimoMensaje();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
+        leerListaDeMensajes();
 
         floatingActionButtonEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +94,7 @@ public class ActivityChat extends AppCompatActivity {
 
                 String getTextEditText = editTextCampoChat.getText().toString();
 
-                if (getTextEditText.length() >= 1){
+                if (getTextEditText.length() >= 1) {
                     ChatMessage chatMessage = new ChatMessage(getTextEditText);
 
                     FirebaseDatabase.getInstance()
@@ -130,11 +103,17 @@ public class ActivityChat extends AppCompatActivity {
                             .push()
                             .setValue(chatMessage);
 
+                    ControllerRoomMensajes controllerRoomMensajes = new ControllerRoomMensajes(getApplicationContext());
+
+                    controllerRoomMensajes.addMensajeAlRoom(chatMessage);
                     editTextCampoChat.setText("");
+                    leerListaDeMensajes();
+
+                    recyclerViewAdapterMensajes.notifyDataSetChanged();
 
                     scrollHaciaElUltimoMensaje();
-                }else {
-                    Toast.makeText(ActivityChat.this,"El mensaje debe contener almenos un caracter", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ActivityChat.this, "El mensaje debe contener almenos un caracter", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -146,23 +125,34 @@ public class ActivityChat extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_GET_CONTENT);
                 i.setType("image/jpeg");
-                i.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-                startActivityForResult(Intent.createChooser(i,"Selecciona una Imagen"), PHOTO_SEND);
+                i.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(Intent.createChooser(i, "Selecciona una Imagen"), PHOTO_SEND);
             }
         });
     }
 
-    public void seteoDeRecycler() {
 
+    public void leerListaDeMensajes() {
+
+        controllerMensajes.obtenerMensajes(new ResultListener<List<ChatMessage>>() {
+            @Override
+            public void finish(List<ChatMessage> resultado) {
+                recyclerViewAdapterMensajes.setMensajes(resultado);
+                scrollHaciaElUltimoMensaje();
+                mantenerLaVistaDelRecyclerHaciaArriba();
+            }
+        });
+    }
+
+
+    public void seteoDeRecycler() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ActivityChat.this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerViewAdapterMensajes = new RecyclerViewAdapterMensajes();
         recyclerView.setAdapter(recyclerViewAdapterMensajes);
-
-        recyclerViewAdapterMensajes.notifyDataSetChanged();
     }
 
-    public void scrollHaciaElUltimoMensaje(){
+    public void scrollHaciaElUltimoMensaje() {
 
         recyclerView.scrollToPosition(recyclerViewAdapterMensajes.getItemCount() - 1);
     }
@@ -170,7 +160,7 @@ public class ActivityChat extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PHOTO_SEND && resultCode == RESULT_OK){
+        if (requestCode == PHOTO_SEND && resultCode == RESULT_OK) {
             Uri uri = data.getData();
             storageReference = firebaseStorage.getReference("imagenes_chat");
             final StorageReference imagenReferencia = storageReference.child(uri.getLastPathSegment());
@@ -180,7 +170,7 @@ public class ActivityChat extends AppCompatActivity {
                     mAuth = FirebaseAuth.getInstance();
                     final FirebaseUser user = mAuth.getCurrentUser();
                     Uri uri = taskSnapshot.getDownloadUrl();
-                    ChatMessage chatMessage = new ChatMessage(user.getDisplayName() + " ha enviado una foto.",uri.toString());
+                    ChatMessage chatMessage = new ChatMessage(user.getDisplayName() + " ha enviado una foto.", uri.toString());
                     databaseReference.push().setValue(chatMessage);
                 }
             });
@@ -189,7 +179,7 @@ public class ActivityChat extends AppCompatActivity {
 
     }
 
-    private void mantenerLaVistaDelRecyclerHaciaArriba(){
+    private void mantenerLaVistaDelRecyclerHaciaArriba() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 

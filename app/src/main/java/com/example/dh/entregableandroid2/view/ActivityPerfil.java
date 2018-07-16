@@ -70,7 +70,6 @@ public class ActivityPerfil extends AppCompatActivity {
         Glide.with(ActivityPerfil.this).load(user.getPhotoUrl()).into(imageViewFotoPerfilUsuario);
 
 
-
     }
 
     @Override

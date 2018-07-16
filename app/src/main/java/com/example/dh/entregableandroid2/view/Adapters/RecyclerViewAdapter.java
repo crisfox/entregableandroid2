@@ -1,9 +1,6 @@
 package com.example.dh.entregableandroid2.view.Adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,17 +12,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.dh.entregableandroid2.R;
-import com.example.dh.entregableandroid2.model.pojo.Artist;
 import com.example.dh.entregableandroid2.model.pojo.Pintura;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,9 +32,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
     private Context context;
 
 
-    public RecyclerViewAdapter(List<Pintura> listaDePinturas, EscuchadorDePinturas escuchadorDePinturas) {
+    public RecyclerViewAdapter(EscuchadorDePinturas escuchadorDePinturas) {
         this.escuchadorDePinturas = escuchadorDePinturas;
-        this.listaDePinturas = listaDePinturas;
+        this.listaDePinturas = new ArrayList<>();
     }
 
     @NonNull
@@ -100,7 +92,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
         }
 
     }
-    public void setPinturas(List<Pintura> listaDePinturas){
+
+    public void setPinturas(List<Pintura> listaDePinturas) {
         this.listaDePinturas.clear();
         this.listaDePinturas.addAll(listaDePinturas);
         notifyDataSetChanged();

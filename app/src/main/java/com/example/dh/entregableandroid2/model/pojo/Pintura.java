@@ -10,9 +10,9 @@ import android.support.annotation.NonNull;
  */
 @Entity
 public class Pintura {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @NonNull
-    int id;
+    private String image;
 
     @ColumnInfo(name = "name")
     private String name;
@@ -20,22 +20,11 @@ public class Pintura {
     @ColumnInfo(name = "id_artist")
     private String artistId;
 
-    @ColumnInfo(name = "image")
-    private String image;
 
     public Pintura(String name, String artistId, String image) {
         this.name = name;
         this.artistId = artistId;
         this.image = image;
-    }
-
-    @NonNull
-    public int getId() {
-        return id;
-    }
-
-    public void setId(@NonNull int id) {
-        this.id = id;
     }
 
     public String getArtistId() {

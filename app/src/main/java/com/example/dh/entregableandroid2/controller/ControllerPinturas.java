@@ -1,63 +1,71 @@
 package com.example.dh.entregableandroid2.controller;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.example.dh.entregableandroid2.model.dao.DAOPinturaInternet;
 import com.example.dh.entregableandroid2.model.pojo.Pintura;
-import com.example.dh.entregableandroid2.util.DataBase;
 import com.example.dh.entregableandroid2.util.ResultListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by DH on 11/6/2018.
+ * Created by Cristian on 16/7/2018.
  */
 
 public class ControllerPinturas {
 
     private Context context;
+    private List<Pintura> listaDePinturasPorArtista;
 
     public ControllerPinturas(Context context) {
         this.context = context;
     }
 
-    public List<Pintura> getPinturas() {
-        DataBase dataBase = new DataBase(context);
-        return dataBase.getAllPinturas();
-    }
-
-    public void addPintura(Pintura... pintura) {
-        DataBase dataBase = new DataBase(context);
-        dataBase.insertAll(pintura);
-    }
-
-    public void removePintura(Pintura pintura) {
-        DataBase dataBase = new DataBase(context);
-        dataBase.delete(pintura);
-    }
-
-    public Pintura getPinturaWithName(String name) {
-        DataBase dataBase = new DataBase(context);
-        return dataBase.getPinturaWithName(name);
-    }
-
-
-    public void obtenerPinturas(final ResultListener<List<Pintura>> listenerDeLaVista) {
-
-
-            ResultListener<List<Pintura>> listenerDelControlador = new ResultListener<List<Pintura>>() {
+    public void obtenerPinturas(final ResultListener<List<Pintura>> escuchadorVista, final String idArtist) {
+        listaDePinturasPorArtista = new ArrayList<>();
+        if (hayInternet()) {
+            ResultListener<List<Pintura>> escuchadorControlador = new ResultListener<List<Pintura>>() {
                 @Override
                 public void finish(List<Pintura> resultado) {
 
-                    listenerDeLaVista.finish(resultado);
+                    listaDePinturasPorArtista = filtrarPorArtista(resultado, idArtist);
+                    escuchadorVista.finish(listaDePinturasPorArtista);
                 }
             };
-                DAOPinturaInternet daoPinturaInternet = new DAOPinturaInternet();
 
-                daoPinturaInternet.obtenerPinturaDeInternet(listenerDelControlador);
+            DAOPinturaInternet daoPinturaInternet = new DAOPinturaInternet();
+            daoPinturaInternet.obtenerPinturaDeInternet(escuchadorControlador);
+        } else {
+            ControllerRoomPinturas controllerRoomPinturas = new ControllerRoomPinturas(context);
 
+            listaDePinturasPorArtista = filtrarPorArtista(controllerRoomPinturas.getPinturas(), idArtist);
+            escuchadorVista.finish(listaDePinturasPorArtista);
 
+        }
     }
 
+    private List<Pintura> filtrarPorArtista(List<Pintura> listaDePinturasObtenidas, String idDelArtista) {
+        ControllerRoomPinturas controllerRoomPinturas = new ControllerRoomPinturas(context);
+        for (Pintura pintura : listaDePinturasObtenidas) {
+            if (pintura.getArtistId().equals(idDelArtista)) {
+                listaDePinturasPorArtista.add(pintura);
+                controllerRoomPinturas.removePintura(pintura);
+                controllerRoomPinturas.addPintura(pintura);
+            }
+        }
+        return listaDePinturasPorArtista;
+    }
 
+    private boolean hayInternet() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

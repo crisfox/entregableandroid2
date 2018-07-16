@@ -3,7 +3,6 @@ package com.example.dh.entregableandroid2.view.Adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,13 +35,13 @@ public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-       if(listaDeMensajes.get(position).getMessageUser().equals(user.getDisplayName())) {
+        if (listaDeMensajes.get(position).getMessageUser().equals(user.getDisplayName())) {
 
-           return R.layout.message_user;
+            return R.layout.message_user;
 
-       }else {
-           return R.layout.message;
-       }
+        } else {
+            return R.layout.message;
+        }
 
     }
 
@@ -95,25 +94,31 @@ public class RecyclerViewAdapterMensajes extends RecyclerView.Adapter {
             textViewMensaje.setText(chatMessage.getMessageText());
 
             Glide.with(context).load(chatMessage.getImagenUser()).into(imageViewUser);
-            textViewTiempo.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
-                    chatMessage.getMessageTime()));
-            if (chatMessage.getUrlImagen() != null){
+            textViewTiempo.setText(chatMessage.getMessageTime());
+            if (chatMessage.getUrlImagen() != null) {
                 imageViewImagenEnviadaMensaje.setVisibility(View.VISIBLE);
                 textViewMensaje.setVisibility(View.GONE);
                 Glide.with(context).load(chatMessage.getUrlImagen()).into(imageViewImagenEnviadaMensaje);
-            }else{
+            } else {
                 imageViewImagenEnviadaMensaje.setVisibility(View.GONE);
+                textViewMensaje.setVisibility(View.VISIBLE);
             }
 
         }
 
     }
 
-    public void addMensaje(ChatMessage unMensaje){
+    public void addMensaje(ChatMessage unMensaje) {
         listaDeMensajes.add(unMensaje);
         notifyItemChanged(listaDeMensajes.size());
     }
 
+    public void setMensajes(List<ChatMessage> listaDeMensajesRecibidos) {
+
+        this.listaDeMensajes.clear();
+        this.listaDeMensajes.addAll(listaDeMensajesRecibidos);
+        notifyDataSetChanged();
+    }
 
 
 }

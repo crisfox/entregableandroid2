@@ -30,27 +30,6 @@ public class Artist {
     @ColumnInfo(name = "influecia")
     private String Influenced_by;
 
-
-    public void setArtistId(String artistId) {
-        this.artistId = artistId;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public void setInfluenced_by(String influenced_by) {
-        Influenced_by = influenced_by;
-    }
-
     @Ignore
     public Artist() {
         //Para Firebase
@@ -90,6 +69,13 @@ public class Artist {
         return artistId;
     }
 
+    public String getNationality() {
+        return nationality;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
 
     public String getName() {
         return name;
@@ -97,10 +83,6 @@ public class Artist {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getNationality() {
-        return nationality;
     }
 
     @Override
@@ -118,7 +100,4 @@ public class Artist {
         return artistId.hashCode();
     }
 
-    public String getImagen() {
-        return imagen;
-    }
 }
